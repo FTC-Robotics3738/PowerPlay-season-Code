@@ -18,8 +18,8 @@ import com.qualcomm.robotcore.util.Range;
 import java.util.List;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 
-@Autonomous(name = "RightSideAutonomous")
-public class RightSideAutonomous extends LinearOpMode {
+@Autonomous(name = "LHS")
+public class LeftAutonomous extends LinearOpMode {
 
     private DcMotorEx leftFrontDrive = null;
     private DcMotorEx leftBackDrive = null;
@@ -75,10 +75,10 @@ public class RightSideAutonomous extends LinearOpMode {
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         lift.setDirection(DcMotor.Direction.REVERSE);
 
-        leftFrontDrive.setTargetPositionTolerance(1);
-        leftBackDrive.setTargetPositionTolerance(1);
-        rightFrontDrive.setTargetPositionTolerance(1);
-        rightBackDrive.setTargetPositionTolerance(1);
+        leftFrontDrive.setTargetPositionTolerance(10);
+        leftBackDrive.setTargetPositionTolerance(10);
+        rightFrontDrive.setTargetPositionTolerance(10);
+        rightBackDrive.setTargetPositionTolerance(10);
 
         boolean recognized = false;
         int finalHaul = 0;
@@ -98,13 +98,13 @@ public class RightSideAutonomous extends LinearOpMode {
 
                             if (recognition.getLabel().equals("1")) {
                                 recognized = true;
-                                finalHaul = -500;
+                                finalHaul = -1000;
                                 break;
                             }
 
                             else if (recognition.getLabel().equals("2")) {
                                 recognized = true;
-                                finalHaul = 500;
+                                finalHaul = 0;
                                 break;
                             } else if (recognition.getLabel().equals("3")) {
                                 recognized = true;
@@ -116,24 +116,32 @@ public class RightSideAutonomous extends LinearOpMode {
                 }
             }
             // write robot actions between the } characters using the preprogramed actions;
+            // resetLift();
             grab();
-            moveLift(200);
+            moveLift(100);
             isBusy();
-            straight(100, 800);
+            straight(2680, 500);
             isBusy();
-            sleep(250);
-            turnToLeft(1000);
-            isBusy();
-            straight(1650, 800);
-            isBusy();
-            sleep(250);
-            turnToRight(1000);
-            isBusy();
-            straight(950, 800);
-            sleep(100);
             high();
             isBusy();
+            turnToRight(500);
+            isBusy();
+            straight(70, 250);
+            isBusy();
+            moveLift(1750);
+            sleep(500);
             release();
+            sleep(250);
+            straight(-70, 250);
+            isBusy();
+            strafe(500, -500);
+            isBusy();
+            // resetLift();
+            moveLift(100);
+            straight(finalHaul, 500);
+            isBusy();
+            turnToRight(500);
+
         }
     }
 
@@ -145,7 +153,8 @@ public class RightSideAutonomous extends LinearOpMode {
             sum += leftFrontDrive.isBusy() ? 1 : 0;
             sum += rightFrontDrive.isBusy() ? 1 : 0;
             sum += rightBackDrive.isBusy() ? 1 : 0;
-            sleep(100);
+            // sum += lift.isBusy() ? 1 : 0;
+            // sleep(100);
         } while (sum > 0);
     }
 
@@ -195,10 +204,10 @@ public class RightSideAutonomous extends LinearOpMode {
         leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        leftFrontDrive.setVelocity(800);
-        rightFrontDrive.setVelocity(800);
-        leftBackDrive.setVelocity(800);
-        rightBackDrive.setVelocity(800);
+        leftFrontDrive.setVelocity(0);
+        rightFrontDrive.setVelocity(0);
+        leftBackDrive.setVelocity(0);
+        rightBackDrive.setVelocity(0);
     }
 
     public void straight(int dist, int spd) {
@@ -253,10 +262,10 @@ public class RightSideAutonomous extends LinearOpMode {
     }
 
     public void turnToRight(int spd) {
-        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + 515);
-        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() - 515);
-        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + 515);
-        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() - 515);
+        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() + 506);
+        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() - 506);
+        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() + 506);
+        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() - 506);
 
         leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -270,10 +279,10 @@ public class RightSideAutonomous extends LinearOpMode {
     }
 
     public void turnToLeft(int spd) {
-        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() - 507);
-        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + 507);
-        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() - 507);
-        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + 507);
+        leftFrontDrive.setTargetPosition(leftFrontDrive.getCurrentPosition() - 506);
+        rightFrontDrive.setTargetPosition(rightFrontDrive.getCurrentPosition() + 506);
+        leftBackDrive.setTargetPosition(leftBackDrive.getCurrentPosition() - 506);
+        rightBackDrive.setTargetPosition(rightBackDrive.getCurrentPosition() + 506);
 
         leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
